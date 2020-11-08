@@ -1,9 +1,9 @@
 import pygame
+from enum import Enum
+from math import cos, sin, pi, atan2
 import pygame.freetype
 from pygame.sprite import Sprite
 from pygame.rect import Rect
-from enum import Enum
-from math import cos, sin, pi, atan2
 from UI import UIElement
 
 #colors
@@ -26,7 +26,9 @@ walls = {
 evil_mods = [{"x": 150, "y": 320,"texture" : pygame.image.load('creeper.jpg')},
             {"x": 300,"y": 225,"texture" : pygame.image.load('skeleton.jpg')},
             {"x": 298,"y": 400,"texture" : pygame.image.load('enderman.png')},
-            {"x": 120,"y": 150,"texture" : pygame.image.load('enderman.png')}     
+            {"x": 120,"y": 150,"texture" : pygame.image.load('enderman.png')},
+            {"x": 340,"y": 100,"texture" : pygame.image.load('enderman.png')},
+            {"x": 100,"y": 120,"texture" : pygame.image.load('creeper.jpg')}     
     ]
 
 # Raycaster class
@@ -176,6 +178,7 @@ class GameState(Enum):
     MAIN_MENU = 0
     GAME = 1
 
+# main function to manage screens in the game. code exracted from code extracted from https://programmingpixels.com/handling-a-title-screen-game-flow-and-buttons-in-pygame.html
 def main():
     pygame.init()
 
@@ -193,8 +196,10 @@ def main():
             pygame.quit()
             return
 
+
+# function to render the screen of the main menu, code inspired in code exracted from https://programmingpixels.com/handling-a-title-screen-game-flow-and-buttons-in-pygame.html
 def mainMenu(screen):
-    background=pygame.image.load('bg.jpg')
+    background=pygame.image.load('background.jpg')
     background = pygame.transform.scale(background, (1000, 500))
 
     play_btn = UIElement(
@@ -314,18 +319,17 @@ def play(screen):
                 if r.map[j][i] == ' ':
                     r.player['x'] = newX
                     r.player['y'] = newY
+
             if ev.type == pygame.MOUSEBUTTONDOWN or ev.type == pygame.MOUSEBUTTONUP:
                 if ev.button == 4:
-                    r.player['angle'] -= 5
+                    r.player['angle'] -= 10
                 if ev.button == 5:
-                    r.player['angle'] += 5
+                    r.player['angle'] += 10
 
         screen.fill(pygame.Color(57,67,32, 255))
 
-        #Color for the sky
         screen.fill(pygame.Color("skyblue"), (int(r.width / 2), 0, int(r.width / 2),int(r.height / 2)))
         
-        #Color of the grass
         screen.fill(pygame.Color(57,67,32, 255), (int(r.width / 2), int(r.height / 2), int(r.width / 2),int(r.height / 2)))
 
         r.render()
